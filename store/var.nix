@@ -14,11 +14,34 @@
     FZF_DEFAULT_COMMAND = "fd -H -I -E '{.astro,.git,.kube,.idea,.vscode,.sass-cache,node_modules,build,.vscode-server,.virtualenvs,target}' --type f --strip-cwd-prefix";
     FZF_DEFAULT_OPTS = "--height 40% --layout=reverse --color=bg+:,bg:,gutter:-1,spinner:#f5e0dc,hl:#f38ba8 --color=fg:#cdd6f4,header:#f38ba8,info:#cba6f7,pointer:#f5e0dc --color=marker:#f5e0dc,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8";
 
-#     TERM = "wezterm";
-#     DISPLAY = ":0";
-#     DIRENV_LOG_FORMAT = ""; # close direnv log
-#     FLAKE = "/home/parsifa1/nixos/";
-#     PNPM_HOME = "/home/parsifa1/.local/share/pnpm";
-    PATH = "$PATH:$HOME/.cargo/bin:/usr/lib/wsl/lib:/home/frost_ice/.local/bin";
+    XDG_DATA_HOME = "$HOME/.local/share";
+    XDG_CONFIG_HOME = "$HOME/.config";
+    XDG_CACHE_HOME = "$HOME/.cache";
+
+    PYTHON_HISTORY = "$HOME/.config/python/python_history";
+
+    NODE_REPL_HISTORY = "$HOME/.config/node/node_repl_history";
+    NPM_CONFIG_USERCONFIG = "$HOME/.config/npm/npmrc";
+    NPM_CONFIG_PREFIX = "$HOME/.local/share/npm";
+    NPM_CONFIG_CACHE = "$HOME/.cache/npm";
+    PNPM_HOME = "$HOME/.local/share/pnpm";
+
+    CARGO_HOME = "$HOME/.local/share/cargo";
+    RUSTUP_HOME = "$HOME/.local/share/rustup";
+
+    GPG_TTY = "$(tty)";
+    DOCKER_CONFIG = "$HOME/.config/docker";
+
+    DOTNET_CLI_HOME = "$HOME/.local/share/dotnet";
+
+    GRADLE_USER_HOME = "$HOME/.local/share/gradle";
+
+    NUGET_PACKAGES = "$HOME/.local/share/NuGet/packages";
+
+    CONDARC = "$HOME/.config/conda/condarc";
   };
+  home.sessionPath = [
+    "$CARGO_HOME/bin"
+    "$HOME/.local/bin"
+  ];
 }

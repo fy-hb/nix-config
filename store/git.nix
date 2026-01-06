@@ -2,7 +2,7 @@
   programs.git = {
     enable = true;
     package = pkgs.gitFull;
-    extraConfig = {
+    settings = {
       user.signingkey="58F0009E76DB637F";
       user.email="fyhb233@gmail.com";
       user.name="F. ICE";
