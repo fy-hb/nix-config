@@ -80,7 +80,18 @@
     ];
   };
   my.app = {
+    clangd.enable = true;
+    kitty.enable = true;
     fish.enable = true;
+    neovim.enable = true;
+    sublime.enable = true;
+    vscode.enable = true;
+    wofi.enable = true;
+    yazi.enable = true;
+    git.enable = true;
+    ripgrep.enable = true;
+    starship.enable = true;
+    zoxide.enable = true;
   };
   programs.man.generateCaches = false;
   programs.home-manager.enable = true;

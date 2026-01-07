@@ -1,13 +1,7 @@
 { lib, ... }:
 let
   currentPath = ./.;
-  mkoption = name: lib.mkOption {
-    default = true;
-    example = true;
-    description = "Whether to enable ${name}.";
-    type = lib.types.bool;
-  };
-  loadSubModule = { prefix, name, func }: args@{ config, lib, pkgs, ... }:
+  toOption = { prefix, name, func }: args@{ config, lib, pkgs, ... }:
   let
     prefixList = lib.splitString "." prefix;
     fullPath = prefixList ++ [ name ];
@@ -16,16 +10,21 @@ let
   {
     config = lib.mkIf (cfg.enable or false) (func args);
     options = lib.setAttrByPath fullPath {
-      enable = mkoption "${name}";
+      enable = lib.mkOption {
+        default = false;
+        example = true;
+        description = "Whether to enable ${name}.";
+        type = lib.types.bool;
+      };
     };
   };
-  loadModule = moduleName : prefix :
+  loadModule = moduleName: prefix:
   let
-    _basedir = currentPath + "../../settings/${moduleName}";
+    _basedir = currentPath + "/${moduleName}";
     _allfiles = builtins.readDir _basedir;
     _modulefiles = lib.filterAttrs (filename: type: type == "directory" || (type == "regular" && lib.hasSuffix ".nix" filename)) _allfiles;
     _modulenames = lib.mapAttrsToList (name: _ : name) _modulefiles;
-    modules = map (name: loadSubModule { inherit prefix; name = ((lib.removeSuffix ".nix") name); func=import (_basedir + "/${name}"); }) _modulenames;
+    modules = map (name: toOption { inherit prefix; name = ((lib.removeSuffix ".nix") name); func=import (_basedir + "/${name}"); }) _modulenames;
   in
     modules;
 in
@@ -33,6 +32,6 @@ in
   config.flake.mymodules = {
     app = _ : { imports = loadModule "app" "my.app"; };
     lang = _ : { imports = loadModule "lang" "my.lang"; };
-    nix = _ : { imports = loadModule "nix" "my.nix"; };
+    sys = _ : { imports = loadModule "sys" "my.sys"; };
   };
 }

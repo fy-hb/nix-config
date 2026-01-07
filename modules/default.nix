@@ -3,14 +3,14 @@ with inputs;
 {
   flake.homeModules = {
     imports = [
-      ./utils.nix
+      ./default/nixpkgs.nix
+      ./default/utils.nix
       self.mymodules.app
-      self.mymodules.nix
+      self.mymodules.sys
       self.mymodules.lang
       sops-nix.homeManagerModules.sops
       nix-index-database.homeModules.nix-index
     ];
   };
-  imports = [ ./settings.nix ];
+  imports = [ ./loader.nix ];
 }
-
