@@ -1,10 +1,13 @@
 { inputs, ... }:
 with inputs;
 {
-  flake.homeModules = {
+  flake.defaultModules = {
     imports = [
       ./default/nixpkgs.nix
-      ./default/utils.nix
+    ];
+  };
+  flake.homeModules = {
+    imports = [
       self.mymodules.app
       self.mymodules.sys
       self.mymodules.lang
