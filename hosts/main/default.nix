@@ -29,11 +29,28 @@
     username = config.username;
     stateVersion = "24.11";
     packages = with pkgs; [
-      nh lazygit
-      lazydocker nix-init nil nixfmt-rfc-style
-      eza fzf ripgrep fd bat gnupg dust shell-gpt kaggle
-      primesieve hmcl
-      msedit delta rclone
+      nh
+      lazygit
+      lazydocker
+      nix-init
+      nil
+      nixfmt
+      eza
+      fzf
+      ripgrep
+      fd
+      bat
+      gnupg
+      dust
+      shell-gpt
+      kaggle
+      primesieve
+      hmcl
+      opencode
+      msedit
+      delta
+      rclone
+      gh
     ];
     sessionVariables = {
       EDITOR = "nvim";
@@ -92,6 +109,7 @@
     ripgrep.enable = true;
     starship.enable = true;
     zoxide.enable = true;
+    ghostty.enable = true;
   };
   programs.man.generateCaches = false;
   programs.home-manager.enable = true;

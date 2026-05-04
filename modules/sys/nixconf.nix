@@ -1,11 +1,11 @@
 { lib, pkgs, config, inputs, ... }:
 {
   nix = {
-#     package = pkgs.lixPackageSets.latest.lix;
-#     channel.enable = false;
-#     registry.nixpkgs.flake = inputs.nixpkgs;
+    package = pkgs.lixPackageSets.latest.lix;
+    channel.enable = false;
+    registry.nixpkgs.flake = inputs.nixpkgs;
     settings = {
-#       nix-path = lib.mkForce "nixpkgs=/etc/nix/inputs/nixpkgs";
+       nix-path = lib.mkForce "nixpkgs=/etc/nix/inputs/nixpkgs";
       trusted-users = [
         config.username
         "@wheel"
@@ -16,7 +16,7 @@
         "nix-command"
         "flakes"
       ];
-      use-xdg-base-directories = true;
+      #use-xdg-base-directories = true;
       substituters = [
         "https://cache.nixos.org"
         "https://cache.garnix.io"
@@ -26,10 +26,10 @@
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       ];
     };
-#     extraOptions = "!include ${config.sops.templates.nixconf-gh.path}";
-#     gc = {
-#       automatic = true;
-#     };
+    #extraOptions = "!include ${config.sops.templates.nixconf-gh.path}";
+    gc = {
+      automatic = true;
+    };
   };
-#   environment.etc."nix/inputs/nixpkgs".source = "${inputs.nixpkgs}";
+  environment.etc."nix/inputs/nixpkgs".source = "${inputs.nixpkgs}";
 }

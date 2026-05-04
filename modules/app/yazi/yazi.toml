@@ -11,6 +11,10 @@ sort_sensitive = true
 block = true
 run = "nvim \"$@\""
 
+[[opener.edit]]
+block = false
+run = "code \"$@\""
+
 [[plugin.prepend_fetchers]]
 id = "git"
 name = "*"
