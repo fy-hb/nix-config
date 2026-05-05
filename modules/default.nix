@@ -5,6 +5,7 @@ with inputs;
     defaultModules = {
       imports = [
         ./default/nixpkgs.nix
+#         home-manager.nixosModules.home-manager
         #sops-nix.homeManagerModules.sops
         #nix-index-database.homeModules.nix-index
       ];
@@ -19,6 +20,13 @@ with inputs;
       imports = [
         self.mymodules.sys
         home-manager.darwinModules.home-manager
+      ];
+    };
+    nixosModules.a = {
+      imports = [
+        ./default/nixconf.nix
+        home-manager.nixosModules.home-manager
+        impermanence.nixosModules.impermanence
       ];
     };
   };

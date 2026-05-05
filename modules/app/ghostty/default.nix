@@ -63,7 +63,6 @@ in
   programs.ghostty = {
     enable = true;
     systemd.enable = false;
-    package = null;
     themes.Everforest = {
       background = "#272E33";
       foreground = "#d3c6aa";

@@ -2,6 +2,8 @@
 {
   programs.neovim = {
     enable = true;
+    withRuby = false;
+    withPython3 = false;
 #     extraLuaPackages = ps: [ ps.magick ];
 #     extraPackages = [ pkgs.imagemagick ];
 #     package = pkgs.neovim;

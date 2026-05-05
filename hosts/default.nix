@@ -13,11 +13,25 @@ let genUserConf = args :
         server = lib.mkOption {
           default = server;
         };
+        userConfModule = lib.mkOption {
+          default = genUserConf args;
+        };
       };
     };
 in
 {
   flake = with inputs; {
+    nixosConfigurations."qwq" = nixpkgs.lib.nixosSystem rec {
+      system = "x86_64-linux";
+      specialArgs = { inherit inputs system; };
+      modules = [
+        ./pc/config.nix
+        (genUserConf { username = "frost_ice"; })
+        self.defaultModules
+        self.nixosModules.a
+      ];
+    };
+
     homeConfigurations.frost_ice = home-manager.lib.homeManagerConfiguration {
       pkgs = nixpkgs.legacyPackages.x86_64-linux;
       modules = [

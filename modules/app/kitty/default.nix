@@ -2,7 +2,6 @@
 {
   programs.kitty = {
     enable = true;
-    package = pkgs.runCommand "dummy" {} "mkdir -p $out";
     font = {
       package = pkgs.nerd-fonts.jetbrains-mono;
       name = "JetBrainsMonoNL Nerd Font";

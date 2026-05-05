@@ -1,4 +1,5 @@
- {pkgs, ...}: {
+ { pkgs, ...}:
+ {
   programs.git = {
     enable = true;
     lfs.enable = true;
@@ -15,6 +16,14 @@
       mergetool.vscode.cmd = "code --wait \$MERGED";
       remote.origin.partialclonefilter = "blob:limit=1m";
     };
+  };
+  services.gpg-agent = {
+    enable = true;
+    pinentry.package = pkgs.pinentry-all;
+    pinentry.program = "pinentry-wayprompt";
+  };
+  home.sessionVariables = {
+    GNUPGHOME = "$HOME/.local/share/gnupg";
   };
 }
 

@@ -32,6 +32,5 @@ in
   config.flake.mymodules = {
     app = _ : { imports = loadModule "app" "my.app"; };
     lang = _ : { imports = loadModule "lang" "my.lang"; };
-    sys = _ : { imports = loadModule "sys" "my.sys"; };
   };
 }

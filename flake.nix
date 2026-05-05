@@ -19,6 +19,7 @@
     };
     nixgl.url = "github:nix-community/nixGL";
     flake-parts.url = "github:hercules-ci/flake-parts";
+    impermanence.url = "github:nix-community/impermanence";
   };
 
   outputs =
