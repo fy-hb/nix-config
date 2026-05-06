@@ -1,6 +1,5 @@
 { config, pkgs, ... }:
 {
-
   home = {
     homeDirectory = "/home/${config.username}";
     username = config.username;
@@ -69,6 +68,8 @@
       NUGET_PACKAGES = "$HOME/.local/share/NuGet/packages";
 
       CONDARC = "$HOME/.config/conda/condarc";
+
+      HISTFILE = "$HOME/.local/share/sh-histfile";
     };
     sessionPath = [
       "$CARGO_HOME/bin"

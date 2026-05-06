@@ -12,6 +12,7 @@ with inputs;
     };
     homeModules = {
       imports = [
+        ./default/nixconf-home.nix
         self.mymodules.app
         self.mymodules.lang
       ];

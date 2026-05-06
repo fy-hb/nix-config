@@ -1,14 +1,14 @@
-{ lib, pkgs, config, inputs, ... }:
+{ lib, pkgs, config, ... }:
 {
   nix = {
-    package = pkgs.lixPackageSets.latest.lix;
-    channel.enable = false;
-    registry.nixpkgs.flake = inputs.nixpkgs;
-#     useXdg = true;
+    useXdg = true;
+#     package = pkgs.lixPackageSets.latest.lix;
+#     channel.enable = false;
+#     registry.nixpkgs.flake = inputs.nixpkgs;
     nixPath = [
       "nixpkgs=/etc/nix/inputs/nixpkgs"
     ];
-    settings = {
+/*    settings = {
       trusted-users = [
         config.username
         "@wheel"
@@ -32,7 +32,7 @@
     #extraOptions = "!include ${config.sops.templates.nixconf-gh.path}";
     gc = {
       automatic = true;
-    };
+    };*/
   };
-  environment.etc."nix/inputs/nixpkgs".source = "${inputs.nixpkgs}";
+#   environment.etc."nix/inputs/nixpkgs".source = "${inputs.nixpkgs}";
 }
