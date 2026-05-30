@@ -23,12 +23,12 @@
       kaggle
       primesieve
       hmcl
-      opencode
       msedit
       delta
       rclone
       gh
       protonplus
+      vscode
     ];
     sessionVariables = {
       EDITOR = "nvim";
@@ -42,10 +42,6 @@
 
       FZF_DEFAULT_COMMAND = "fd -H -I -E '{.astro,.git,.kube,.idea,.vscode,.sass-cache,node_modules,build,.vscode-server,.virtualenvs,target}' --type f --strip-cwd-prefix";
       FZF_DEFAULT_OPTS = "--height 40% --layout=reverse --color=bg+:,bg:,gutter:-1,spinner:#f5e0dc,hl:#f38ba8 --color=fg:#cdd6f4,header:#f38ba8,info:#cba6f7,pointer:#f5e0dc --color=marker:#f5e0dc,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8";
-
-      XDG_DATA_HOME = "$HOME/.local/share";
-      XDG_CONFIG_HOME = "$HOME/.config";
-      XDG_CACHE_HOME = "$HOME/.cache";
 
       PYTHON_HISTORY = "$HOME/.config/python/python_history";
 
@@ -70,6 +66,10 @@
       CONDARC = "$HOME/.config/conda/condarc";
 
       HISTFILE = "$HOME/.local/share/sh-histfile";
+
+      NSS_DEFAULT_DB_DIR="$HOME/.local/share/pki/nssdb";
+
+      ANDROID_SDK_HOME = "$HOME/.local/share/android";
     };
     sessionPath = [
       "$CARGO_HOME/bin"
@@ -77,6 +77,7 @@
     ];
   };
   my.app = {
+    ai.enable = true;
     clangd.enable = true;
     kitty.enable = true;
     fish.enable = true;
@@ -90,7 +91,18 @@
     starship.enable = true;
     zoxide.enable = true;
     ghostty.enable = true;
+    eza.enable = true;
+    xdg.enable = true;
+  };
+  my.lang = {
+    python.enable = true;
+    frontend.enable = true;
+    rust.enable = true;
   };
   programs.man.generateCaches = false;
   programs.home-manager.enable = true;
+
+  fonts.fontconfig.enable = true;
+
+  xdg.enable = true;
 }

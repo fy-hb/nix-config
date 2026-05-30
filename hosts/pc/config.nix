@@ -9,6 +9,39 @@
     ./hardware.nix
   ];
 
+  hardware.graphics.enable = true;
+  hardware.graphics.enable32Bit = true;
+  hardware.nvidia = {
+
+    # Modesetting is required.
+    modesetting.enable = true;
+
+    # Nvidia power management. Experimental, and can cause sleep/suspend to fail.
+    # Enable this if you have graphical corruption issues or application crashes after waking
+    # up from sleep. This fixes it by saving the entire VRAM memory to /tmp/ instead
+    # of just the bare essentials.
+    powerManagement.enable = false;
+
+    # Fine-grained power management. Turns off GPU when not in use.
+    # Experimental and only works on modern Nvidia GPUs (Turing or newer).
+    powerManagement.finegrained = false;
+
+    # Use the NVidia open source kernel module (not to be confused with the
+    # independent third-party "nouveau" open source driver).
+    # Support is limited to the Turing and later architectures. Full list of
+    # supported GPUs is at:
+    # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus
+    # Only available from driver 515.43.04+
+    open = false;
+
+    # Enable the Nvidia settings menu,
+	# accessible via `nvidia-settings`.
+    nvidiaSettings = true;
+
+    # Optionally, you may need to select the appropriate driver version for your specific GPU.
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
+  };
+
   environment.persistence."/persist" = {
     enable = true;  # NB: Defaults to true, not needed
     hideMounts = true;
@@ -39,9 +72,13 @@
   # };
 
   # Enable the X11 windowing system.
+  environment.plasma6.excludePackages = [ pkgs.kdePackages.plasma-browser-integration ];
+  programs.chromium.enablePlasmaBrowserIntegration = false;
+
   services = {
     xserver = {
       enable = true;
+      videoDrivers = [ "nvidia" ];
     };
 
     desktopManager.plasma6.enable = true;
@@ -164,16 +201,16 @@
       enable = true;
       fcitx5.waylandFrontend = true;
       fcitx5.addons = with pkgs; [
-#         (fcitx5-rime.override {
-#           rimeDataPkgs = [
-#             pkgs.rime-ice
-#           ];
-#         })
-        fcitx5-rime
+        (fcitx5-rime.override {
+          rimeDataPkgs = [
+            pkgs.rime-ice
+          ];
+        })
+#         fcitx5-rime
         rime-data
         fcitx5-gtk
         fcitx5-lua
-#         fcitx5-fluent
+        fcitx5-fluent
       ];
     };
     defaultLocale = "en_US.UTF-8";
@@ -188,6 +225,27 @@
   };
 
   security = {
+    audit = {
+      enable = true;
+      rules = let
+        home = config.homePath;
+      in [
+        "-a always,exit -F arch=b64 -F dir=${home}/.nv -F perm=wa -k home"
+        "-a always,exit -F arch=b32 -F dir=${home}/.nv -F perm=wa -k home"
+        "-a always,exit -F arch=b64 -F dir=${home}/.pki -F perm=wa -k home"
+        "-a always,exit -F arch=b32 -F dir=${home}/.pki -F perm=wa -k home"
+        "-a always,exit -F arch=b64 -F path=${home}/.gtkrc-2.0 -F perm=wa -k home"
+        "-a always,exit -F arch=b32 -F path=${home}/.gtkrc-2.0 -F perm=wa -k home"
+        "-a always,exit -F arch=b64 -S fork,vfork,clone,clone3 -k process"
+        "-a always,exit -F arch=b32 -S fork,vfork,clone -k process"
+        "-a always,exit -F arch=b64 -S execve,execveat -k process"
+        "-a always,exit -F arch=b32 -S execve,execveat -k process"
+      ];
+    };
+    auditd = {
+      enable = true;
+      settings.log_format = "ENRICHED";
+    };
     rtkit.enable = true;
     sudo.enable = true;
     sudo.extraConfig = ''
@@ -204,27 +262,30 @@
   networking = {
     hostName = "qwq";
     networkmanager.enable = true;
+    nftables.enable = true;
   };
   time.timeZone = "Asia/Shanghai";
 
   environment.systemPackages = with pkgs; [
-    zip unzip p7zip gzip gnutar
+    zip unzipNLS libnatspec  p7zip gzip gnutar
     gnupg pinentry-all git openssh
-    neovim fish nh fastfetch
-    wine qq
+    neovim fish nh fastfetch btop
+    wineWow64Packages.stable wineWow64Packages.fonts winetricks
+    qq onlyoffice-desktopeditors
     gcc llvm clang-tools
-    cudaPackages.cudatoolkit cudaPackages.cudnn
+    cudaPackages.cudatoolkit cudaPackages.cudnn cudatoolkit
     kdePackages.kate
     kdePackages.ark
     kdePackages.kleopatra
-    onlyoffice-desktopeditors
     clash-verge-rev
-    acpi brightnessctl cpupower-gui powertop
-    firefox google-chrome
+    acpi brightnessctl cpupower-gui powertop wl-clipboard
+    firefox google-chrome waydroid-helper android-tools
+    texliveFull texstudio
   ];
 
   programs = {
     fish.enable = true;
+    nix-ld.enable = true;
     hyprland.enable = true;
     clash-verge = {
       enable = true;
@@ -244,6 +305,8 @@
     };
   };
 
+  virtualisation.waydroid.enable = true;
+
   xdg.portal = {
     enable = true;
     xdgOpenUsePortal = true;
@@ -256,6 +319,11 @@
     };
 
     extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+  };
+
+  qt = {
+    enable = true;
+    style = "breeze";
   };
 
   users = {
@@ -275,6 +343,7 @@
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
+    backupCommand = "${pkgs.trash-cli}/bin/trash";
     users.${config.username} = {
       imports = [
         ./home.nix
@@ -293,7 +362,11 @@
     source-han-serif
     source-han-sans
     nerd-fonts.jetbrains-mono
+    corefonts
+    vista-fonts-chs
   ];
+
+#   my.sysapp.onlyoffice.enable = true;
 
   # Configure keymap in X11
   # services.xserver.xkb.layout = "us";
@@ -373,6 +446,5 @@
   #
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
   system.stateVersion = "25.11"; # Did you read the comment?
-
 }
 

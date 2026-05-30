@@ -1,4 +1,19 @@
 { lib, pkgs, config, inputs, ... }:
+let
+  x11Fonts = pkgs.runCommand "X11-fonts" { preferLocalBuild = true; } ''
+    data_path="$out"
+    mkdir -p "$data_path"
+    font_regexp='.*\.\(ttf\|ttc\|otf\|pcf\|pfa\|pfb\|bdf\)\(\.gz\)?'
+
+    find ${toString config.fonts.packages} -regex "$font_regexp" \
+      -exec cp --no-preserve=mode '{}' "$data_path" \;
+    cd "$data_path"
+    ${pkgs.gzip}/bin/gunzip -f *.gz
+    ${pkgs.mkfontscale}/bin/mkfontscale
+    ${pkgs.mkfontscale}/bin/mkfontdir
+    cat $(find ${pkgs.font-alias}/ -name fonts.alias) >fonts.alias
+  '';
+in
 {
   nix = {
     package = pkgs.lixPackageSets.latest.lix;
@@ -19,7 +34,7 @@
         "nix-command"
         "flakes"
       ];
-      #use-xdg-base-directories = true;
+      use-xdg-base-directories = true;
       substituters = [
         "https://cache.nixos.org"
 #         "https://cache.garnix.io"
@@ -32,7 +47,10 @@
     #extraOptions = "!include ${config.sops.templates.nixconf-gh.path}";
     gc = {
       automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 30d";
     };
   };
   environment.etc."nix/inputs/nixpkgs".source = "${inputs.nixpkgs}";
+  environment.etc."x11fonts".source = "${x11Fonts}";
 }

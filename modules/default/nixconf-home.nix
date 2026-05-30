@@ -2,6 +2,7 @@
 {
   nix = {
     useXdg = true;
+    assumeXdg = true;
 #     package = pkgs.lixPackageSets.latest.lix;
 #     channel.enable = false;
 #     registry.nixpkgs.flake = inputs.nixpkgs;
@@ -34,5 +35,6 @@
       automatic = true;
     };*/
   };
+  home.preferXdgDirectories = true;
 #   environment.etc."nix/inputs/nixpkgs".source = "${inputs.nixpkgs}";
 }

@@ -1,4 +1,4 @@
-{pkgs, lib, ...}:
+{ pkgs, lib, ... }:
 let
   exifaudio = pkgs.fetchFromGitHub {
     owner = "Sonico98";
@@ -26,4 +26,7 @@ in
 #       folder-rules = ./. + "/plugins/folder-rules.yazi";
     };
   };
+  home.packages = with pkgs; [
+     exiftool
+  ];
 }

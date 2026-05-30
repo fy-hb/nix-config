@@ -5,7 +5,6 @@
     nodejs_24
     corepack_24
     eslint
-    bun
   ];
   home.sessionVariables = {
     NODE_REPL_HISTORY = "$HOME/.config/node/node_repl_history";
@@ -14,4 +13,9 @@
     NPM_CONFIG_CACHE = "$HOME/.cache/npm";
     PNPM_HOME = "$HOME/.local/share/pnpm";
   };
+  home.sessionPath = [
+    "$HOME/.local/share/pnpm/bin"
+    "$HOME/.cache/.bun/bin"
+    "$HOME/.local/share/npm/bin/"
+  ];
 }

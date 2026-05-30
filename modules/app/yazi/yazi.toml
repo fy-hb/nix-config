@@ -16,14 +16,14 @@ block = false
 run = "code \"$@\""
 
 [[plugin.prepend_fetchers]]
-id = "git"
-name = "*"
-run = "git"
+url   = "*"
+run   = "git"
+group = "git"
 
 [[plugin.prepend_fetchers]]
-id = "git"
-name = "*/"
-run = "git"
+url   = "*/"
+run   = "git"
+group = "git"
 
 [[plugin.prepend_previewers]]
 mime = "audio/*"
