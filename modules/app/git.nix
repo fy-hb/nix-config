@@ -18,7 +18,7 @@
     };
   };
 #   home.sessionVariables = {
-#     GNUPGHOME = "$HOME/.local/share/gnupg";
+#     GNUPGHOME = "${config.xdg.dataHome}/gnupg";
 #   };
   services.gpg-agent = {
     enable = true;

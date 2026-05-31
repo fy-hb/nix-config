@@ -280,7 +280,6 @@
     clash-verge-rev
     acpi brightnessctl cpupower-gui powertop wl-clipboard
     firefox google-chrome waydroid-helper android-tools
-    texliveFull texstudio
   ];
 
   programs = {

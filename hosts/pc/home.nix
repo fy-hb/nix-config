@@ -43,37 +43,39 @@
       FZF_DEFAULT_COMMAND = "fd -H -I -E '{.astro,.git,.kube,.idea,.vscode,.sass-cache,node_modules,build,.vscode-server,.virtualenvs,target}' --type f --strip-cwd-prefix";
       FZF_DEFAULT_OPTS = "--height 40% --layout=reverse --color=bg+:,bg:,gutter:-1,spinner:#f5e0dc,hl:#f38ba8 --color=fg:#cdd6f4,header:#f38ba8,info:#cba6f7,pointer:#f5e0dc --color=marker:#f5e0dc,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8";
 
-      PYTHON_HISTORY = "$HOME/.config/python/python_history";
+      NODE_REPL_HISTORY = "${config.xdg.configHome}/node/node_repl_history";
+      NPM_CONFIG_USERCONFIG = "${config.xdg.configHome}/npm/npmrc";
+      NPM_CONFIG_PREFIX = "${config.xdg.dataHome}/npm";
+      NPM_CONFIG_CACHE = "${config.xdg.cacheHome}/npm";
+      PNPM_HOME = "${config.xdg.dataHome}/pnpm";
 
-      NODE_REPL_HISTORY = "$HOME/.config/node/node_repl_history";
-      NPM_CONFIG_USERCONFIG = "$HOME/.config/npm/npmrc";
-      NPM_CONFIG_PREFIX = "$HOME/.local/share/npm";
-      NPM_CONFIG_CACHE = "$HOME/.cache/npm";
-      PNPM_HOME = "$HOME/.local/share/pnpm";
-
-      CARGO_HOME = "$HOME/.local/share/cargo";
-      RUSTUP_HOME = "$HOME/.local/share/rustup";
+      CARGO_HOME = "${config.xdg.dataHome}/cargo";
+      RUSTUP_HOME = "${config.xdg.dataHome}/rustup";
 
       GPG_TTY = "$(tty)";
-      DOCKER_CONFIG = "$HOME/.config/docker";
+      DOCKER_CONFIG = "${config.xdg.configHome}/docker";
 
-      DOTNET_CLI_HOME = "$HOME/.local/share/dotnet";
+      DOTNET_CLI_HOME = "${config.xdg.dataHome}/dotnet";
 
-      GRADLE_USER_HOME = "$HOME/.local/share/gradle";
+      GRADLE_USER_HOME = "${config.xdg.dataHome}/gradle";
 
-      NUGET_PACKAGES = "$HOME/.local/share/NuGet/packages";
+      NUGET_PACKAGES = "${config.xdg.dataHome}/NuGet/packages";
 
-      CONDARC = "$HOME/.config/conda/condarc";
+      CONDARC = "${config.xdg.configHome}/conda/condarc";
 
-      HISTFILE = "$HOME/.local/share/sh-histfile";
+      HISTFILE = "${config.xdg.dataHome}/sh-histfile";
 
-      NSS_DEFAULT_DB_DIR="$HOME/.local/share/pki/nssdb";
+      NSS_DEFAULT_DB_DIR="${config.xdg.dataHome}/pki/nssdb";
+      NSS_DEFAULT_DB_TYPE="sql";
+      SSL_DIR="${config.xdg.dataHome}/pki/nssdb";
+      HOME_NSS_DB_PATH="${config.xdg.dataHome}/pki/nssdb";
 
-      ANDROID_SDK_HOME = "$HOME/.local/share/android";
+      CUDA_CACHE_PATH="${config.xdg.cacheHome}/nv/ComputeCache";
+
+      ANDROID_SDK_HOME = "${config.xdg.dataHome}/android";
     };
     sessionPath = [
-      "$CARGO_HOME/bin"
-      "$HOME/.local/bin"
+      "${config.xdg.binHome}"
     ];
   };
   my.app = {
@@ -93,11 +95,14 @@
     ghostty.enable = true;
     eza.enable = true;
     xdg.enable = true;
+    wget.enable = true;
+    gtk.enable = true;
   };
   my.lang = {
     python.enable = true;
     frontend.enable = true;
     rust.enable = true;
+    tex.enable = true;
   };
   programs.man.generateCaches = false;
   programs.home-manager.enable = true;

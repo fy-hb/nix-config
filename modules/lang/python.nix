@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 let
   isDarwin = pkgs.stdenv.isDarwin;
   uvBuilder =
@@ -22,7 +22,9 @@ let
 in
 {
   home.sessionVariables = {
-    PIXI_HOME="$HOME/.local/share/pixi";
+    PIXI_HOME = "${config.xdg.dataHome}/pixi";
+    PYTHON_HISTORY = "${config.xdg.stateHome}/python/history";
+    PYTHONHISTFILE = "${config.xdg.stateHome}/python/history";
   };
   home.packages =
     if isDarwin then

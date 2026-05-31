@@ -1,11 +1,14 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
   home.packages = with pkgs; [
     rustup
   ];
 
   home.sessionVariables = {
-    CARGO_HOME = "$HOME/.local/share/cargo";
-    RUSTUP_HOME = "$HOME/.local/share/rustup";
+    CARGO_HOME = "${config.xdg.dataHome}/cargo";
+    RUSTUP_HOME = "${config.xdg.dataHome}/rustup";
   };
+  home.sessionPath = [
+    "${config.xdg.dataHome}/cargo/bin"
+  ];
 }
