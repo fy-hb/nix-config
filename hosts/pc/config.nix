@@ -110,6 +110,11 @@
       '';
     };
 
+#     languagetool = {
+#       enable = true;
+#       port = 1134;
+#     };
+
     nscd = {
       enable = true;
       enableNsncd = true;
@@ -213,13 +218,15 @@
         fcitx5-fluent
       ];
     };
-    defaultLocale = "en_US.UTF-8";
+    defaultLocale = "en_GB.UTF-8";
     extraLocaleSettings = {
       LANGUAGE = "zh_CN.UTF-8";
       LC_TIME = "zh_CN.UTF-8";
+      LC_MONETARY = "en_GB.UTF-8";
+      LC_NUMERIC = "en_GB.UTF-8";
     };
     supportedLocales = [
-      "en_US.UTF-8/UTF-8"
+      "en_GB.UTF-8/UTF-8"
       "zh_CN.UTF-8/UTF-8"
     ];
   };
@@ -230,12 +237,10 @@
       rules = let
         home = config.homePath;
       in [
-        "-a always,exit -F arch=b64 -F dir=${home}/.nv -F perm=wa -k home"
-        "-a always,exit -F arch=b32 -F dir=${home}/.nv -F perm=wa -k home"
+        "-a always,exit -F arch=b64 -F dir=${home}/.dotnet -F perm=wa -k home"
+        "-a always,exit -F arch=b32 -F dir=${home}/.dotnet -F perm=wa -k home"
         "-a always,exit -F arch=b64 -F dir=${home}/.pki -F perm=wa -k home"
         "-a always,exit -F arch=b32 -F dir=${home}/.pki -F perm=wa -k home"
-        "-a always,exit -F arch=b64 -F path=${home}/.gtkrc-2.0 -F perm=wa -k home"
-        "-a always,exit -F arch=b32 -F path=${home}/.gtkrc-2.0 -F perm=wa -k home"
         "-a always,exit -F arch=b64 -S fork,vfork,clone,clone3 -k process"
         "-a always,exit -F arch=b32 -S fork,vfork,clone -k process"
         "-a always,exit -F arch=b64 -S execve,execveat -k process"
@@ -310,11 +315,11 @@
     enable = true;
     xdgOpenUsePortal = true;
     config = {
-      common.default = [ "gtk" ];
-      hyprland.default = [
-        "gtk"
-        "hyprland"
-      ];
+      common.default = [ "*" ];
+#       hyprland.default = [
+#         "gtk"
+#         "hyprland"
+#       ];
     };
 
     extraPortals = [ pkgs.xdg-desktop-portal-gtk ];

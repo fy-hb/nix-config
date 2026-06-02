@@ -9,5 +9,5 @@
     TEXMFVAR = "${config.xdg.cacheHome}/texlive";
     TEXMFHOME = "${config.xdg.dataHome}/texmf";
   };
-  home.packages = with pkgs; [ texliveFull texstudio ];
+  home.packages = with pkgs; [ texliveFull texstudio hunspell ];
 }

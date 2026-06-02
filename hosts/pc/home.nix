@@ -56,6 +56,7 @@
       DOCKER_CONFIG = "${config.xdg.configHome}/docker";
 
       DOTNET_CLI_HOME = "${config.xdg.dataHome}/dotnet";
+      DOTNET_ROOT = "${config.xdg.dataHome}/dotnet";
 
       GRADLE_USER_HOME = "${config.xdg.dataHome}/gradle";
 
