@@ -231,6 +231,10 @@
     ];
   };
 
+  systemd.services.audit-rules-nixos = {
+    after = [ "local-fs.target"];
+  };
+
   security = {
     audit = {
       enable = true;
@@ -275,7 +279,6 @@
     zip rar unzipNLS libnatspec p7zip gzip gnutar
     gnupg pinentry-all git openssh
     neovim fish nh fastfetch btop
-    wineWow64Packages.stable wineWow64Packages.fonts winetricks
     qq onlyoffice-desktopeditors
     gcc llvm clang-tools
     cudaPackages.cudatoolkit cudaPackages.cudnn cudatoolkit

@@ -99,6 +99,7 @@
     xdg.enable = true;
     wget.enable = true;
     gtk.enable = true;
+    wine.enable = true;
   };
   my.lang = {
     python.enable = true;
