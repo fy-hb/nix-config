@@ -29,6 +29,7 @@
       gh
       protonplus
       vscode
+      wechat
     ];
     sessionVariables = {
       EDITOR = "nvim";

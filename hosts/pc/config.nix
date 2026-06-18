@@ -272,7 +272,7 @@
   time.timeZone = "Asia/Shanghai";
 
   environment.systemPackages = with pkgs; [
-    zip unzipNLS libnatspec  p7zip gzip gnutar
+    zip rar unzipNLS libnatspec p7zip gzip gnutar
     gnupg pinentry-all git openssh
     neovim fish nh fastfetch btop
     wineWow64Packages.stable wineWow64Packages.fonts winetricks
