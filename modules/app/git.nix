@@ -1,15 +1,15 @@
- { pkgs, config, ...}:
- {
+{ pkgs, config, ... }:
+{
   programs.git = {
     enable = true;
     lfs.enable = true;
     package = pkgs.gitFull;
     signing.format = "openpgp";
     settings = {
-      user.signingkey="58F0009E76DB637F";
-      user.email="fyhb233@gmail.com";
-      user.name="F. ICE";
-      commit.gpgsign=true;
+      user.signingkey = "58F0009E76DB637F";
+      user.email = "fyhb233@gmail.com";
+      user.name = "F. ICE";
+      commit.gpgsign = true;
       diff.tool = "vscode";
       difftool.vscode.cmd = "code --wait --diff \"\$LOCAL\" \"$REMOTE\"";
       merge.tool = "vscode";
@@ -17,9 +17,9 @@
       remote.origin.partialclonefilter = "blob:limit=1m";
     };
   };
-#   home.sessionVariables = {
-#     GNUPGHOME = "${config.xdg.dataHome}/gnupg";
-#   };
+  #   home.sessionVariables = {
+  #     GNUPGHOME = "${config.xdg.dataHome}/gnupg";
+  #   };
   services.gpg-agent = {
     enable = true;
     pinentry.package = pkgs.pinentry-all;
@@ -78,4 +78,3 @@
     };
   };
 }
-

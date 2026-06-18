@@ -18,15 +18,15 @@ in
     keymap = lib.importTOML ./keymap.toml;
     initLua = ./init.lua;
     plugins = with pkgs; {
-#       inherit exifaudio;
+      #       inherit exifaudio;
       starship = yaziPlugins.starship;
       git = yaziPlugins.git;
       smart-enter = yaziPlugins.smart-enter;
       toggle-pane = yaziPlugins.toggle-pane;
-#       folder-rules = ./. + "/plugins/folder-rules.yazi";
+      #       folder-rules = ./. + "/plugins/folder-rules.yazi";
     };
   };
   home.packages = with pkgs; [
-     exiftool
+    exiftool
   ];
 }

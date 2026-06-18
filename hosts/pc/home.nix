@@ -67,12 +67,12 @@
 
       HISTFILE = "${config.xdg.dataHome}/sh-histfile";
 
-      NSS_DEFAULT_DB_DIR="${config.xdg.dataHome}/pki/nssdb";
-      NSS_DEFAULT_DB_TYPE="sql";
-      SSL_DIR="${config.xdg.dataHome}/pki/nssdb";
-      HOME_NSS_DB_PATH="${config.xdg.dataHome}/pki/nssdb";
+      NSS_DEFAULT_DB_DIR = "${config.xdg.dataHome}/pki/nssdb";
+      NSS_DEFAULT_DB_TYPE = "sql";
+      SSL_DIR = "${config.xdg.dataHome}/pki/nssdb";
+      HOME_NSS_DB_PATH = "${config.xdg.dataHome}/pki/nssdb";
 
-      CUDA_CACHE_PATH="${config.xdg.cacheHome}/nv/ComputeCache";
+      CUDA_CACHE_PATH = "${config.xdg.cacheHome}/nv/ComputeCache";
 
       ANDROID_SDK_HOME = "${config.xdg.dataHome}/android";
     };

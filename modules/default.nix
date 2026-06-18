@@ -5,7 +5,7 @@ with inputs;
     defaultModules = {
       imports = [
         ./default/nixpkgs.nix
-#         home-manager.nixosModules.home-manager
+        #         home-manager.nixosModules.home-manager
         #sops-nix.homeManagerModules.sops
         #nix-index-database.homeModules.nix-index
       ];

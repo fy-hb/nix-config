@@ -2,10 +2,17 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ config, lib, pkgs, inputs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  inputs,
+  ...
+}:
 
 {
-  imports = [ # Include the results of the hardware scan.
+  imports = [
+    # Include the results of the hardware scan.
     ./hardware.nix
   ];
 
@@ -35,7 +42,7 @@
     open = false;
 
     # Enable the Nvidia settings menu,
-	# accessible via `nvidia-settings`.
+    # accessible via `nvidia-settings`.
     nvidiaSettings = true;
 
     # Optionally, you may need to select the appropriate driver version for your specific GPU.
@@ -43,7 +50,7 @@
   };
 
   environment.persistence."/persist" = {
-    enable = true;  # NB: Defaults to true, not needed
+    enable = true; # NB: Defaults to true, not needed
     hideMounts = true;
     directories = [
       "/var/log/"
@@ -98,7 +105,7 @@
       ports = [ 19198 ];
       settings = {
         PasswordAuthentication = false;
-#         kbdInteractiveAuthentication = false;
+        #         kbdInteractiveAuthentication = false;
       };
       allowSFTP = false; # Don't set this if you need sftp
       extraConfig = ''
@@ -110,10 +117,10 @@
       '';
     };
 
-#     languagetool = {
-#       enable = true;
-#       port = 1134;
-#     };
+    #     languagetool = {
+    #       enable = true;
+    #       port = 1134;
+    #     };
 
     nscd = {
       enable = true;
@@ -158,8 +165,19 @@
   powerManagement.cpuFreqGovernor = "performance";
 
   boot = {
-    initrd.availableKernelModules = [ "acpi_call" "xhci_pci" "thunderbolt" "vmd" "nvme" "uas" "sd_mod" ];
-    kernelModules = [ "kvm-intel" "acpi_call" ];
+    initrd.availableKernelModules = [
+      "acpi_call"
+      "xhci_pci"
+      "thunderbolt"
+      "vmd"
+      "nvme"
+      "uas"
+      "sd_mod"
+    ];
+    kernelModules = [
+      "kvm-intel"
+      "acpi_call"
+    ];
     kernelPackages = pkgs.linuxPackages_latest;
     loader.grub = {
       enable = true;
@@ -188,8 +206,8 @@
       efiSysMountPoint = "/boot";
       canTouchEfiVariables = true;
     };
-#       systemd-boot.configurationLimit = 10;
-#       systemd-boot.enable = true;
+    #       systemd-boot.configurationLimit = 10;
+    #       systemd-boot.enable = true;
     supportedFilesystems = [ "btrfs" ];
     extraModulePackages =
       with config.boot.kernelPackages;
@@ -211,7 +229,7 @@
             pkgs.rime-ice
           ];
         })
-#         fcitx5-rime
+        #         fcitx5-rime
         rime-data
         fcitx5-gtk
         fcitx5-lua
@@ -232,24 +250,26 @@
   };
 
   systemd.services.audit-rules-nixos = {
-    after = [ "local-fs.target"];
+    after = [ "local-fs.target" ];
   };
 
   security = {
     audit = {
       enable = true;
-      rules = let
-        home = config.homePath;
-      in [
-        "-a always,exit -F arch=b64 -F dir=${home}/.dotnet -F perm=wa -k home"
-        "-a always,exit -F arch=b32 -F dir=${home}/.dotnet -F perm=wa -k home"
-        "-a always,exit -F arch=b64 -F dir=${home}/.pki -F perm=wa -k home"
-        "-a always,exit -F arch=b32 -F dir=${home}/.pki -F perm=wa -k home"
-        "-a always,exit -F arch=b64 -S fork,vfork,clone,clone3 -k process"
-        "-a always,exit -F arch=b32 -S fork,vfork,clone -k process"
-        "-a always,exit -F arch=b64 -S execve,execveat -k process"
-        "-a always,exit -F arch=b32 -S execve,execveat -k process"
-      ];
+      rules =
+        let
+          home = config.homePath;
+        in
+        [
+          "-a always,exit -F arch=b64 -F dir=${home}/.dotnet -F perm=wa -k home"
+          "-a always,exit -F arch=b32 -F dir=${home}/.dotnet -F perm=wa -k home"
+          "-a always,exit -F arch=b64 -F dir=${home}/.pki -F perm=wa -k home"
+          "-a always,exit -F arch=b32 -F dir=${home}/.pki -F perm=wa -k home"
+          "-a always,exit -F arch=b64 -S fork,vfork,clone,clone3 -k process"
+          "-a always,exit -F arch=b32 -S fork,vfork,clone -k process"
+          "-a always,exit -F arch=b64 -S execve,execveat -k process"
+          "-a always,exit -F arch=b32 -S execve,execveat -k process"
+        ];
     };
     auditd = {
       enable = true;
@@ -262,10 +282,10 @@
       Defaults lecture = never
     '';
 
-#     pam.services = {
-#       swaylock = { };
-#       hyprlock = { };
-#     };
+    #     pam.services = {
+    #       swaylock = { };
+    #       hyprlock = { };
+    #     };
   };
 
   networking = {
@@ -276,18 +296,43 @@
   time.timeZone = "Asia/Shanghai";
 
   environment.systemPackages = with pkgs; [
-    zip rar unzipNLS libnatspec p7zip gzip gnutar
-    gnupg pinentry-all git openssh
-    neovim fish nh fastfetch btop
-    qq onlyoffice-desktopeditors
-    gcc llvm clang-tools
-    cudaPackages.cudatoolkit cudaPackages.cudnn cudatoolkit
+    zip
+    rar
+    unzipNLS
+    libnatspec
+    p7zip
+    gzip
+    gnutar
+    gnupg
+    pinentry-all
+    git
+    openssh
+    neovim
+    fish
+    nh
+    fastfetch
+    btop
+    qq
+    onlyoffice-desktopeditors
+    gcc
+    llvm
+    clang-tools
+    cudaPackages.cudatoolkit
+    cudaPackages.cudnn
+    cudatoolkit
     kdePackages.kate
     kdePackages.ark
     kdePackages.kleopatra
     clash-verge-rev
-    acpi brightnessctl cpupower-gui powertop wl-clipboard
-    firefox google-chrome waydroid-helper android-tools
+    acpi
+    brightnessctl
+    cpupower-gui
+    powertop
+    wl-clipboard
+    firefox
+    google-chrome
+    waydroid-helper
+    android-tools
   ];
 
   programs = {
@@ -319,10 +364,10 @@
     xdgOpenUsePortal = true;
     config = {
       common.default = [ "*" ];
-#       hyprland.default = [
-#         "gtk"
-#         "hyprland"
-#       ];
+      #       hyprland.default = [
+      #         "gtk"
+      #         "hyprland"
+      #       ];
     };
 
     extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
@@ -373,7 +418,7 @@
     vista-fonts-chs
   ];
 
-#   my.sysapp.onlyoffice.enable = true;
+  #   my.sysapp.onlyoffice.enable = true;
 
   # Configure keymap in X11
   # services.xserver.xkb.layout = "us";
@@ -454,4 +499,3 @@
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
   system.stateVersion = "25.11"; # Did you read the comment?
 }
-

@@ -16,7 +16,7 @@
     };
 
     #plugins = with pkgs.fishPlugins [
-    # 
+    #
     #];
 
     functions = {
