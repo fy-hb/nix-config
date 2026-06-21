@@ -3,15 +3,15 @@ let
   home = config.home.homeDirectory;
   dataRoot = "${config.xdg.dataHome}/wechat-mounts";
 
-  # 三条 wechat 数据重定向；dst 是 wechat 视角下的路径，src 是真实落地处。
+  # 三条 wechat 数据重定向；dst 是 wechat 视角下的路径（$HOME 下），src 是真实落地处。
   binds = [
-    { src = "${dataRoot}/xwechat_files"; dst = "${home}/xwechat_files"; kind = "dir"; }
-    { src = "${dataRoot}/dotxwechat";    dst = "${home}/.xwechat";      kind = "dir"; }
-    { src = "${dataRoot}/sys1og.conf";   dst = "${home}/.sys1og.conf";  kind = "file"; }
+    { src = "${dataRoot}/xwechat_files"; dst = "xwechat_files"; kind = "dir"; }
+    { src = "${dataRoot}/dotxwechat";    dst = ".xwechat";      kind = "dir"; }
+    { src = "${dataRoot}/sys1og.conf";   dst = ".sys1og.conf";  kind = "file"; }
   ];
 
   # 这些 basename 让位给上面三条 --bind，不参与回挂。
-  skipPattern = "xwechat_files|.xwechat|.sys1og.conf";
+  skipPattern = lib.concatMapStringsSep "|" (x : x.dst) binds;
 
   preBwrap = ''
     # 1) 确保宿主源路径存在；--bind 不存在的源会报错。
@@ -38,7 +38,7 @@ let
         printf -- '--bind\0%s\0%s\0' "$entry" "$entry"
       done
       ${lib.concatMapStringsSep "\n" (b:
-        ''printf -- '--bind\0%s\0%s\0' ${lib.escapeShellArg b.src} ${lib.escapeShellArg b.dst}''
+        ''printf -- '--bind\0%s\0%s\0' ${lib.escapeShellArg b.src} ${lib.escapeShellArg (home + "/" + b.dst)}''
       ) binds}
     )
   '';
