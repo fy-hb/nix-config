@@ -47,6 +47,16 @@
 
     # Optionally, you may need to select the appropriate driver version for your specific GPU.
     package = config.boot.kernelPackages.nvidiaPackages.stable;
+
+    prime = {
+      offload = {
+        enable = true;
+        enableOffloadCmd = true;
+      };
+      #       sync.enable = true;
+      intelBusId = "PCI:0:2:0";
+      nvidiaBusId = "PCI:1:0:0";
+    };
   };
 
   environment.persistence."/persist" = {
@@ -160,6 +170,7 @@
       # PCIE_ASPM_ON_AC = "default";
       # PCIE_ASPM_ON_BAT = "powersupersave";
     };
+
   };
 
   powerManagement.cpuFreqGovernor = "performance";
@@ -263,6 +274,8 @@
         [
           "-a always,exit -F arch=b64 -F dir=${home}/.dotnet -F perm=wa -k home"
           "-a always,exit -F arch=b32 -F dir=${home}/.dotnet -F perm=wa -k home"
+          "-a always,exit -F arch=b64 -F dir=${home}/.sys1og.conf -F perm=wa -k home"
+          "-a always,exit -F arch=b32 -F dir=${home}/.sys1og.conf -F perm=wa -k home"
           "-a always,exit -F arch=b64 -F dir=${home}/.pki -F perm=wa -k home"
           "-a always,exit -F arch=b32 -F dir=${home}/.pki -F perm=wa -k home"
           "-a always,exit -F arch=b64 -S fork,vfork,clone,clone3 -k process"
@@ -319,11 +332,12 @@
     clang-tools
     cudaPackages.cudatoolkit
     cudaPackages.cudnn
+    mesa-demos
+    vulkan-tools
     cudatoolkit
     kdePackages.kate
     kdePackages.ark
     kdePackages.kleopatra
-    clash-verge-rev
     acpi
     brightnessctl
     cpupower-gui
@@ -333,6 +347,7 @@
     google-chrome
     waydroid-helper
     android-tools
+    pciutils
   ];
 
   programs = {

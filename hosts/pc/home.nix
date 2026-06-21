@@ -22,14 +22,14 @@
       shell-gpt
       kaggle
       primesieve
-      hmcl
       msedit
       delta
       rclone
       gh
       protonplus
-      vscode
       wechat
+      element-desktop
+      typora
     ];
     sessionVariables = {
       EDITOR = "nvim";
@@ -100,6 +100,7 @@
     wget.enable = true;
     gtk.enable = true;
     wine.enable = true;
+    hmcl.enable = true;
   };
   my.lang = {
     python.enable = true;

@@ -12,4 +12,7 @@
     --user-data-dir="${config.xdg.dataHome}/vscode/user"
     --extensions-dir="${config.xdg.dataHome}/vscode/extensions"
   '';
+  home.packages = with pkgs; [
+    vscode-fhs
+  ];
 }

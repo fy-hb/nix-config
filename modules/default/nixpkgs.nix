@@ -20,6 +20,9 @@ let
         '';
       });
     })
+    (final: prev: {
+      clash-verge-rev = nixpkgs-clash-verge-rev.legacyPackages.x86_64-linux.clash-verge-rev;
+    })
     #     (
     #       final: prev: {
     #         unzip = prev.unzip.overrideAttrs (old: {
