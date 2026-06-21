@@ -1,33 +1,53 @@
 { config, pkgs, lib, ... }:
 let
-  # 把 wechat 进程视图里的这几个 $HOME 路径重定向到 XDG_DATA_HOME 下，
-  # 真实 $HOME 不会被污染。bwrap 不展开 $HOME，必须用字面绝对路径。
   home = config.home.homeDirectory;
   dataRoot = "${config.xdg.dataHome}/wechat-mounts";
+
+  # 三条 wechat 数据重定向；dst 是 wechat 视角下的路径，src 是真实落地处。
   binds = [
     { src = "${dataRoot}/xwechat_files"; dst = "${home}/xwechat_files"; kind = "dir"; }
     { src = "${dataRoot}/dotxwechat";    dst = "${home}/.xwechat";      kind = "dir"; }
     { src = "${dataRoot}/sys1og.conf";   dst = "${home}/.sys1og.conf";  kind = "file"; }
   ];
 
-  # 在进入 bwrap 之前确保宿主源路径存在；--bind 不存在的源会报错。
-  preBwrap = lib.concatStringsSep "\n" (map (b:
-    if b.kind == "dir"
-    then ''mkdir -p "${b.src}"''
-    else ''mkdir -p "$(dirname "${b.src}")"; [ -e "${b.src}" ] || : > "${b.src}"''
-  ) binds);
+  # 这些 basename 让位给上面三条 --bind，不参与回挂。
+  skipPattern = "xwechat_files|.xwechat|.sys1og.conf";
 
-  # 追加到 bwrap 命令行末尾；位于自动 /home 绑定之后，因此覆盖之。
-  extraBwrap = lib.concatMap (b: [ "--bind" b.src b.dst ]) binds;
+  preBwrap = ''
+    # 1) 确保宿主源路径存在；--bind 不存在的源会报错。
+    ${lib.concatMapStringsSep "\n" (b:
+      if b.kind == "dir"
+      then ''mkdir -p ${lib.escapeShellArg b.src}''
+      else ''mkdir -p "$(dirname ${lib.escapeShellArg b.src})" && { [ -e ${lib.escapeShellArg b.src} ] || : > ${lib.escapeShellArg b.src}; }''
+    ) binds}
 
-  # package.nix 顶层不暴露 appimageTools；wechat 内部经 callPackage 自动注入。
-  # 通过 pkgs.extend 建一个局部 overlay 视图，仅给 wechat 看到改造过的
-  # wrapAppImage —— 全局 pkgs 与其它 appimage 包不受影响。
+    # 2) 用 FD 10 注入 bwrap 动态参数（NUL 分隔）：
+    #    a. --tmpfs $HOME 在命名空间内盖住真实 $HOME，让后续 bwrap mkdir
+    #       落到 tmpfs，避免空挂载点漏到宿主。
+    #    b. for 循环把真实 $HOME 的其它条目逐个 --bind 回 tmpfs，
+    #       wechat 仍能读到 .config/.cache 等。
+    #    c. 末三条 --bind 把数据落点重定向到 dataRoot。
+    exec 10< <(
+      printf -- '--tmpfs\0%s\0' ${lib.escapeShellArg home}
+      shopt -s nullglob dotglob
+      for entry in ${lib.escapeShellArg home}/*; do
+        base="''${entry##*/}"
+        case "$base" in
+          ${skipPattern}) continue ;;
+        esac
+        printf -- '--bind\0%s\0%s\0' "$entry" "$entry"
+      done
+      ${lib.concatMapStringsSep "\n" (b:
+        ''printf -- '--bind\0%s\0%s\0' ${lib.escapeShellArg b.src} ${lib.escapeShellArg b.dst}''
+      ) binds}
+    )
+  '';
+
   pkgs' = pkgs.extend (final: prev: {
     appimageTools = prev.appimageTools // {
       wrapAppImage = args: prev.appimageTools.wrapAppImage (args // {
         extraPreBwrapCmds = (args.extraPreBwrapCmds or "") + "\n" + preBwrap;
-        extraBwrapArgs = (args.extraBwrapArgs or []) ++ extraBwrap;
+        extraBwrapArgs = (args.extraBwrapArgs or []) ++ [ "--args" "10" ];
       });
     };
   });
