@@ -274,8 +274,6 @@
         [
           "-a always,exit -F arch=b64 -F dir=${home}/.dotnet -F perm=wa -k home"
           "-a always,exit -F arch=b32 -F dir=${home}/.dotnet -F perm=wa -k home"
-          "-a always,exit -F arch=b64 -F dir=${home}/.sys1og.conf -F perm=wa -k home"
-          "-a always,exit -F arch=b32 -F dir=${home}/.sys1og.conf -F perm=wa -k home"
           "-a always,exit -F arch=b64 -F dir=${home}/.pki -F perm=wa -k home"
           "-a always,exit -F arch=b32 -F dir=${home}/.pki -F perm=wa -k home"
           "-a always,exit -F arch=b64 -S fork,vfork,clone,clone3 -k process"

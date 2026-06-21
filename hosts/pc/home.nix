@@ -27,9 +27,10 @@
       rclone
       gh
       protonplus
-      wechat
       element-desktop
       typora
+      glow
+      jq
     ];
     sessionVariables = {
       EDITOR = "nvim";
@@ -101,6 +102,7 @@
     gtk.enable = true;
     wine.enable = true;
     hmcl.enable = true;
+    wechat.enable = true;
   };
   my.lang = {
     python.enable = true;
