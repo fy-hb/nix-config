@@ -4,7 +4,7 @@ let
   special =
     if isDarwin then
       {
-        font-size = 18.5;
+        font-size = 14;
         window-height = 38;
         window-width = 154;
         window-padding-y = "1,1";
