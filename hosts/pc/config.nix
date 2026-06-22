@@ -344,6 +344,7 @@
     waydroid-helper
     android-tools
     pciutils
+    dnsutils
   ];
 
   programs = {
@@ -354,7 +355,7 @@
       enable = true;
       autoStart = true;
       serviceMode = true;
-      tunMode = true;
+      tunMode = false;
       group = "wheel";
     };
     gnupg.agent = {

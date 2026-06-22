@@ -45,15 +45,6 @@
       FZF_DEFAULT_COMMAND = "fd -H -I -E '{.astro,.git,.kube,.idea,.vscode,.sass-cache,node_modules,build,.vscode-server,.virtualenvs,target}' --type f --strip-cwd-prefix";
       FZF_DEFAULT_OPTS = "--height 40% --layout=reverse --color=bg+:,bg:,gutter:-1,spinner:#f5e0dc,hl:#f38ba8 --color=fg:#cdd6f4,header:#f38ba8,info:#cba6f7,pointer:#f5e0dc --color=marker:#f5e0dc,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8";
 
-      NODE_REPL_HISTORY = "${config.xdg.configHome}/node/node_repl_history";
-      NPM_CONFIG_USERCONFIG = "${config.xdg.configHome}/npm/npmrc";
-      NPM_CONFIG_PREFIX = "${config.xdg.dataHome}/npm";
-      NPM_CONFIG_CACHE = "${config.xdg.cacheHome}/npm";
-      PNPM_HOME = "${config.xdg.dataHome}/pnpm";
-
-      CARGO_HOME = "${config.xdg.dataHome}/cargo";
-      RUSTUP_HOME = "${config.xdg.dataHome}/rustup";
-
       GPG_TTY = "$(tty)";
       DOCKER_CONFIG = "${config.xdg.configHome}/docker";
 
@@ -66,12 +57,7 @@
 
       CONDARC = "${config.xdg.configHome}/conda/condarc";
 
-      HISTFILE = "${config.xdg.dataHome}/sh-histfile";
-
-      NSS_DEFAULT_DB_DIR = "${config.xdg.dataHome}/pki/nssdb";
-      NSS_DEFAULT_DB_TYPE = "sql";
-      SSL_DIR = "${config.xdg.dataHome}/pki/nssdb";
-      HOME_NSS_DB_PATH = "${config.xdg.dataHome}/pki/nssdb";
+      HISTFILE = "${config.xdg.stateHome}/sh_history";
 
       CUDA_CACHE_PATH = "${config.xdg.cacheHome}/nv/ComputeCache";
 
