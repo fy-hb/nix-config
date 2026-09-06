@@ -31,6 +31,8 @@
       typora
       glow
       jq
+      en-croissant
+      typst
     ];
     sessionVariables = {
       EDITOR = "nvim";

@@ -1,11 +1,28 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   home = config.home.homeDirectory;
   dataRoot = "${config.xdg.dataHome}/vscode";
   binds = [
-    { src = dataRoot; dst = ".vscode";        kind = "dir"; }
-    { src = dataRoot; dst = ".vscode-shared"; kind = "dir"; }
-    { src = "${dataRoot}/dotdotdotdotdotdotnet"; dst = ".dotnet"; kind = "dir"; }
+    {
+      src = dataRoot;
+      dst = ".vscode";
+      kind = "dir";
+    }
+    {
+      src = dataRoot;
+      dst = ".vscode-shared";
+      kind = "dir";
+    }
+    {
+      src = "${dataRoot}/dotdotdotdotdotdotnet";
+      dst = ".dotnet";
+      kind = "dir";
+    }
   ];
 
   # 这些 basename 让位给上面的 --bind，不参与回挂；按 dst 生成。
@@ -13,10 +30,12 @@ let
 
   preBwrap = ''
     # 1) 确保宿主源路径存在；--bind 不存在的源会报错。
-    ${lib.concatMapStringsSep "\n" (b:
-      if b.kind == "dir"
-      then ''mkdir -p ${lib.escapeShellArg b.src}''
-      else ''mkdir -p "$(dirname ${lib.escapeShellArg b.src})" && { [ -e ${lib.escapeShellArg b.src} ] || : > ${lib.escapeShellArg b.src}; }''
+    ${lib.concatMapStringsSep "\n" (
+      b:
+      if b.kind == "dir" then
+        "mkdir -p ${lib.escapeShellArg b.src}"
+      else
+        ''mkdir -p "$(dirname ${lib.escapeShellArg b.src})" && { [ -e ${lib.escapeShellArg b.src} ] || : > ${lib.escapeShellArg b.src}; }''
     ) binds}
 
     # 2) 用 FD 10 注入 bwrap 动态参数（NUL 分隔）：
@@ -33,8 +52,11 @@ let
         esac
         printf -- '--bind\0%s\0%s\0' "$entry" "$entry"
       done
-      ${lib.concatMapStringsSep "\n" (b:
-        ''printf -- '--bind\0%s\0%s\0' ${lib.escapeShellArg b.src} ${lib.escapeShellArg (home + "/" + b.dst)}''
+      ${lib.concatMapStringsSep "\n" (
+        b:
+        ''printf -- '--bind\0%s\0%s\0' ${lib.escapeShellArg b.src} ${
+          lib.escapeShellArg (home + "/" + b.dst)
+        }''
       ) binds}
     )
   '';
@@ -42,14 +64,27 @@ let
   # generic.nix 暴露 customizeFHSEnv 钩子，但 pkgs.vscode 顶层（vscode.nix）
   # 没把它转发出来。这里用局部 overlay 包装 buildVscode：所有用它构造的
   # vscode 系列包都会带上我们的 customizeFHSEnv，pkgs.vscode.fhs 即生效。
-  pkgs' = pkgs.extend (final: prev: {
-    buildVscode = args: prev.buildVscode (args // {
-      customizeFHSEnv = fhsArgs: fhsArgs // {
-        extraPreBwrapCmds = (fhsArgs.extraPreBwrapCmds or "") + "\n" + preBwrap;
-        extraBwrapArgs = (fhsArgs.extraBwrapArgs or []) ++ [ "--args" "10" ];
-      };
-    });
-  });
+  pkgs' = pkgs.extend (
+    final: prev: {
+      buildVscode =
+        args:
+        prev.buildVscode (
+          args
+          // {
+            customizeFHSEnv =
+              fhsArgs:
+              fhsArgs
+              // {
+                extraPreBwrapCmds = (fhsArgs.extraPreBwrapCmds or "") + "\n" + preBwrap;
+                extraBwrapArgs = (fhsArgs.extraBwrapArgs or [ ]) ++ [
+                  "--args"
+                  "10"
+                ];
+              };
+          }
+        );
+    }
+  );
 in
 {
   home.packages = [ pkgs'.vscode.fhs ];

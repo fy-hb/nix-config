@@ -1,4 +1,9 @@
-{ pkgs, config, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 let
   isDarwin = pkgs.stdenv.isDarwin;
   uvBuilder =
@@ -13,10 +18,19 @@ let
           stdenv.cc.cc
         ];
     };
-  python3_13 = pkgs.writeShellScriptBin "python" ''
-    export LD_LIBRARY_PATH=$NIX_LD_LIBRARY_PATH
-    exec ${pkgs.python313}/bin/python "$@"
-  '';
+  pyWrapper =
+    py: alias:
+    pkgs.runCommand "python-wrappers"
+      {
+        buildInputs = [ pkgs.makeWrapper ];
+      }
+      ''
+        mkdir -p $out/bin
+        for name in ${lib.concatStringsSep " " alias}; do
+          makeWrapper ${py}/bin/python $out/bin/$name \
+            --set LD_LIBRARY_PATH "$NIX_LD_LIBRARY_PATH"
+        done
+      '';
   uvFHS = uvBuilder "uv";
   uvxFHS = uvBuilder "uvx";
 in
@@ -30,13 +44,19 @@ in
     if isDarwin then
       with pkgs;
       [
+        python
         python313
         uv
         python313Packages.pip
       ]
     else
       [
-        python3_13
+        (pyWrapper pkgs.python313 [
+          "py"
+          "python"
+          "python3"
+          "python313"
+        ])
         uvFHS
         uvxFHS
       ];

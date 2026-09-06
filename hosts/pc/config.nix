@@ -355,7 +355,7 @@
       enable = true;
       autoStart = true;
       serviceMode = true;
-      tunMode = false;
+      tunMode = true;
       group = "wheel";
     };
     gnupg.agent = {
@@ -367,6 +367,81 @@
         no-allow-external-cache = "";
       };
     };
+    steam =
+      let
+        binds = [
+          {
+            src = "dotsteam";
+            dst = ".steam";
+            kind = "dir";
+          }
+          {
+            src = "dotpulsecookie";
+            dst = ".pulse-cookie";
+            kind = "f";
+          }
+        ];
+
+        skipPattern = lib.concatMapStringsSep "|" (b: b.dst) binds;
+
+        preBwrap = ''
+          # 运行期解析 home / dataRoot，不依赖 nixos/home-manager 模块的 config 参数
+          home="$HOME"
+          dataRoot="''${XDG_DATA_HOME:-$HOME/.local/share}/steam"
+
+          # 确保 bind source 存在
+          ${lib.concatMapStringsSep "\n" (
+            b:
+            if b.kind == "dir" then
+              ''
+                mkdir -p "$dataRoot/${b.src}"
+              ''
+            else
+              ''
+                mkdir -p "$dataRoot"
+                { [ -e "$dataRoot/${b.src}" ] || : > "$dataRoot/${b.src}"; }
+              ''
+          ) binds}
+
+          # FD 114 提供动态 bwrap 参数
+          exec 114< <(
+            printf -- '--tmpfs\0%s\0' "$home"
+
+            shopt -s nullglob dotglob
+
+            for entry in "$home"/*; do
+              base="''${entry##*/}"
+
+              case "$base" in
+                ${skipPattern})
+                  continue
+                  ;;
+              esac
+
+              printf -- '--bind\0%s\0%s\0' "$entry" "$entry"
+            done
+
+            ${lib.concatMapStringsSep "\n" (b: ''
+              printf -- '--bind\0%s\0%s\0' \
+                "$dataRoot/${b.src}" \
+                "$home/${b.dst}"
+            '') binds}
+          )
+        '';
+
+        steam = pkgs.steam.override (old: {
+          extraPreBwrapCmds = (old.extraPreBwrapCmds or "") + "\n" + preBwrap;
+
+          extraBwrapArgs = (old.extraBwrapArgs or [ ]) ++ [
+            "--args"
+            "114"
+          ];
+        });
+      in
+      {
+        enable = true;
+        package = steam;
+      };
   };
 
   virtualisation.waydroid.enable = true;

@@ -27,7 +27,7 @@ let
       }
     else
       {
-        font-size = 14;
+        font-size = 10;
         theme = "Everforest";
         window-height = 40;
         window-width = 135;

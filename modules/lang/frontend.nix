@@ -10,8 +10,8 @@
     NPM_CONFIG_USERCONFIG = "${config.xdg.configHome}/npm/npmrc";
     NPM_CONFIG_PREFIX = "${config.xdg.dataHome}/npm";
     NPM_CONFIG_CACHE = "${config.xdg.cacheHome}/npm";
-    NPM_CONFIG_INIT_MODULE="${config.xdg.cacheHome}/npm/config/npm-init.js";
-    NPM_CONFIG_TMP="${config.xdg.cacheHome}/npm";
+    NPM_CONFIG_INIT_MODULE = "${config.xdg.cacheHome}/npm/config/npm-init.js";
+    NPM_CONFIG_TMP = "${config.xdg.cacheHome}/npm";
 
     NODE_REPL_HISTORY = "${config.xdg.stateHome}/node/node_repl_history";
 
