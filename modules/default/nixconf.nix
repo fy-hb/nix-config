@@ -22,7 +22,7 @@ let
 in
 {
   nix = {
-    package = pkgs.lixPackageSets.latest.lix;
+    package = pkgs.nix;
     channel.enable = false;
     registry.nixpkgs.flake = inputs.nixpkgs;
     #     useXdg = true;

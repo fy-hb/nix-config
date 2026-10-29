@@ -1,26 +1,25 @@
 {
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "git+ssh://git@github.com/nixos/nixpkgs?ref=nixos-unstable&shallow=1";
     home-manager = {
-      url = "github:nix-community/home-manager";
+      url = "git+ssh://git@github.com/nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     sops-nix = {
-      url = "github:Mic92/sops-nix";
+      url = "git+ssh://git@github.com/Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nh = {
-      url = "github:nix-community/nh";
+      url = "git+ssh://git@github.com/nix-community/nh";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-index-database = {
-      url = "github:nix-community/nix-index-database";
+      url = "git+ssh://git@github.com/nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixpkgs-clash-verge-rev.url = "github:nixos/nixpkgs/nixos-26.05";
-    nixgl.url = "github:nix-community/nixGL";
-    flake-parts.url = "github:hercules-ci/flake-parts";
-    impermanence.url = "github:nix-community/impermanence";
+    nixgl.url = "git+ssh://git@github.com/nix-community/nixGL";
+    flake-parts.url = "git+ssh://git@github.com/hercules-ci/flake-parts";
+    impermanence.url = "git+ssh://git@github.com/nix-community/impermanence";
   };
 
   outputs =

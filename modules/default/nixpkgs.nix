@@ -13,9 +13,6 @@ let
         '';
       });
     })
-    (final: prev: {
-      clash-verge-rev = nixpkgs-clash-verge-rev.legacyPackages."${system}".clash-verge-rev;
-    })
   ];
 in
 {

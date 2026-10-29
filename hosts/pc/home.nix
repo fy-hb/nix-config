@@ -33,6 +33,7 @@
       jq
       en-croissant
       typst
+      krita
     ];
     sessionVariables = {
       EDITOR = "nvim";
@@ -91,6 +92,7 @@
     wine.enable = true;
     hmcl.enable = true;
     wechat.enable = true;
+    lutris.enable = true;
   };
   my.lang = {
     python.enable = true;

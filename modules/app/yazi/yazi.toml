@@ -9,11 +9,15 @@ sort_sensitive = true
 
 [[opener.edit]]
 block = true
-run = "nvim \"$@\""
+run = "nvim \"%s\""
 
 [[opener.edit]]
 block = false
-run = "code \"$@\""
+run = "code \"%s\""
+
+[[opener.edit]]
+block = false
+run = "kate \"%s\""
 
 [[plugin.prepend_fetchers]]
 url   = "*"

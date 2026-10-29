@@ -256,6 +256,7 @@
     };
     supportedLocales = [
       "en_GB.UTF-8/UTF-8"
+      "en_US.UTF-8/UTF-8"
       "zh_CN.UTF-8/UTF-8"
     ];
   };
@@ -431,7 +432,6 @@
 
         steam = pkgs.steam.override (old: {
           extraPreBwrapCmds = (old.extraPreBwrapCmds or "") + "\n" + preBwrap;
-
           extraBwrapArgs = (old.extraBwrapArgs or [ ]) ++ [
             "--args"
             "114"
@@ -441,8 +441,11 @@
       {
         enable = true;
         package = steam;
+        gamescopeSession.enable = true;
       };
+    gamescope.enable = true;
   };
+  
 
   virtualisation.waydroid.enable = true;
 
